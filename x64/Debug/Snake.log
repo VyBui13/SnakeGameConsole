@@ -1,0 +1,5 @@
+﻿  HelpSystem.cpp
+C:\Users\Admin\Documents\C++\GameConsole\Snake\HelpSystem.cpp(42,57): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  main.cpp
+  Generating Code...
+  Snake.vcxproj -> C:\Users\Admin\Documents\C++\GameConsole\x64\Debug\Snake.exe
