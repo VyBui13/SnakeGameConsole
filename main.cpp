@@ -162,6 +162,8 @@ void inputKey() {
 }
 
 int main() {
+    ConsoleSize::hiddenScreenPointer();
+
     std::vector<std::string> logo = {
         "  / $$$$$$ / $$  /$$  /$$$$$$  / $$  / $$/ $$$$$$$$",
         " / $$__$$ | $$$ | $$ /$$__  $$| $$  /$$/| $$_____/ ",
@@ -290,14 +292,21 @@ int main() {
 
         //HELP
         if (selected == 3) {
-            HelpSystem help(80);
-            std::cout << help.drawMainPannel();
-            std::cout << help.drawInstructionLogo();
-            std::cout << help.drawInstruction();
-            system("pause");
+            bool isLoop = true;
+            unsigned char c = 'w';
+            HelpSystem help(90);
+            while (isLoop) {
+                std::cout << help.drawMainPannel();
+                std::cout << help.drawInstructionLogo();
+                std::cout << help.drawInstruction();
+                std::cout << help.drawSmallPannel(c);
+                c = _getch();
+                if (c == Keys::Escaped) {
+                    isLoop = false;
+                }
+            }
         }
         //HELP
-
 
         //EXIT
         if (selected == 4) {
@@ -307,107 +316,7 @@ int main() {
 
         system("cls");
     }
-    //GOODBYE 
-    std::vector<std::string> exit{
-        "  /$$$$$$   /$$$$$$   /$$$$$$  /$$$$$$$        /$$$$$$$  /$$     /$$ /$$$$$$$$",
-        " /$$__  $$ /$$__  $$ /$$__  $$| $$__  $$      | $$__  $$|  $$   /$$/| $$_____/",
-        "| $$  \\__/| $$  \\ $$| $$  \\ $$| $$  \\ $$      | $$  \\ $$ \\  $$ /$$/ | $$      ",
-        "| $$ /$$$$| $$  | $$| $$  | $$| $$  | $$      | $$$$$$$   \\  $$$$/  | $$$$$   ",
-        "| $$|_  $$| $$  | $$| $$  | $$| $$  | $$      | $$__  $$   \\  $$/   | $$__/   ",
-        "| $$  \\ $$| $$  | $$| $$  | $$| $$  | $$      | $$  \\ $$    | $$    | $$      ",
-        "|  $$$$$$/|  $$$$$$/|  $$$$$$/| $$$$$$$/      | $$$$$$$/    | $$    | $$$$$$$$",
-        " \\______/  \\______/  \\______/ |_______/       |_______/     |__/    |________/"
-
-    };
-    std::vector<std::string> snake{
-        "                           @@@@@@@@@",
-        "                          @@@@@@@@@@",
-        "                          @@@@@@@@@@",
-        "     @@@@@             @@@@@@@@@@@@ ",
-        "  @@@@@@@@@@@@        @@@@@@@@      ", 
-        "(@@@@@@@@@@@@@@@      @@@@@@@       ", 
-        "@@@@@@@   @@@@@@@@@    @@@@@@@@     ", 
-        " @@@@@@@@   @@@@@@@@@   @@@@@@@@@   ", 
-        "   @@@@@@@@#   @@@@@@@@@   @@@@@@@@ ", 
-        "     @@@@@@@@@   @@@@@@@@@   @@@@@@ ", 
-        "       .@@@@@@@@    @@@@@@@@@@@@@@* ", 
-        "@@@@@@@   @@@@@@@@    @@@@@@@@@@@   ", 
-        "@@@@@@@@@   @@@@@@                  ", 
-        "   @@@@@@@@@@@@@@@                  ", 
-        "     @@@@@@@@@@@@                   "
-    };
-    std::vector<std::string> exitWord{
-        "  ____  ____  _____ ____ ____       _    _   ___   __  ",
-        " |  _ \\|  _ \\| ____/ ___/ ___|     / \\  | \\ | \\ \\ / /  ",
-        " | |_) | |_) |  _| \\___ \\___ \\    / _ \\ |  \\| |\\ V /   ",
-        " |  __/|  _ <| |___ ___) |__) |  / ___ \\| |\\  | | |    ",
-        " |_| __|_|_\\_\\_____|____/____/  /_/___\\_\\_|_\\_|_|_|___ ",
-        "| |/ / ____\\ \\ / / |_   _/ _ \\  | ____\\ \\/ /_ _|_   _|",
-        "| ' /|  _|  \\ V /    | || | | | |  _|  \\  / | |  | |  ",
-        "| . \\| |___  | |     | || |_| | | |___ /  \\ | |  | |  ",
-        "|_|\\_\\_____| |_|     |_| \\___/  |_____/_/\\_\\___| |_|  "
-    };
-
-    //DRAW LINE
-    int start = 3;
-    auto console = ConsoleSize::getConsoleSize();
-    std::string line(console.second, '*');
-    std::cout << "\x1b[0;93m";
-    std::cout << "\x1b[" << std::to_string(start) << ";0H";
-    std::cout << line;
-    std::cout << "\x1b[" << std::to_string(start + exit.size() + 1) << ";0H";
-    std::cout << line;
-    std::cout << "\x1b[0;0m";
-
-    std::string newLine(console.second, '-');
-    std::cout << "\x1b[0;96m";
-    std::cout << "\x1b[" << std::to_string(start + exit.size() + 2) << ";0H";
-    std::cout << newLine;
-    std::cout << "\x1b[" << std::to_string(start - 1) << ";0H";
-    std::cout << newLine;
-    std::cout << "\x1b[0;0m";
-    //DRAW LINE
-
-    int minColumnSnake = 6;
-
-    //DRAW SNAKE ICON
-    std::cout << "\x1b[5;92m";
-    for (int i = 0; i < snake.size(); i++) {
-        std::cout << "\x1b[" << std::to_string(start + exit.size() + 4 + i) << ";6H";
-        std::cout << snake[i];
-    }
-    std::cout << "\x1b[0;0m";
-    //DRAW SNAKE ICON
-
-    //DRAW EXIT NOTIFICATION
-    size_t minColumnExitWord = minColumnSnake + snake[0].size() + 12;
-    for (int i = 0; i < exitWord.size(); i++) {
-        if (i <= 4) {
-            std::cout << "\x1b[0;91m";
-        }
-        else {
-            std::cout << "\x1b[0;96m";
-        }
-        std::cout << "\x1b[" << std::to_string(start + exit.size() + 7 + i) << ";" << std::to_string(minColumnExitWord) << "H";
-        std::cout << exitWord[i];
-    }
-    std::cout << "\x1b[0;0m";
-    //DRAW EXIT NOTIFICATION
-
-    //DRAW "GOODBYE"
-    start = 4;
-    size_t minColumnExit = (console.second - exit[0].size()) / 2 + 1;
-    for (int i = 1; i <= minColumnExit; i++) {
-        std::string temp(i, ' ');
-        for (int j = start; j < start + exit.size(); j++) {
-            std::cout << "\x1b[" << std::to_string(j) << ";" << std::to_string(0) << "H";
-            std::cout << temp;
-            std::cout << "\x1b[" << std::to_string(j) << ";" << std::to_string(i) << "H";
-            std::cout << exit[j - start];
-        }
-        Sleep(100);
-    }
-    //DRAW "GOODBYE"
+    newMenu.exitGame();
 
     auto c = _getch();
     system("cls");

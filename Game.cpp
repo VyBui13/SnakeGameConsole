@@ -246,6 +246,7 @@ std::string Game::drawPannelScore() {
     int minColumnScore = maxColumn + 2;
     std::stringstream ss;
     std::string line(console.second - maxColumn - 1, '*');
+    ss << "\x1b[38;5;123m";
     ss << "\x1b[0;" << std::to_string(minColumnScore) << "H";
     ss << line;
     for (int i = 2; i <= console.first - 1; i++) {
@@ -270,15 +271,20 @@ std::string Game::drawScore() {
     int scoreStartRow = 1 + widthLine + 1;
     int sizeScorePannel = console.second - size.second;
     int scoreStartColumn = maxColumn + 2 + (sizeScorePannel - widthScorePannel) / 2 + 1;
+
     std::stringstream ss;
     std::string line(widthScorePannel, '*');
+
+    //DRAW PANNEL FOR SCORE
+        //DRAW FIRST CELL
+    ss << "\x1b[38;5;246m";
     ss << "\x1b[" << std::to_string(scoreStartRow++) << ";" << std::to_string(scoreStartColumn) << "H";
     ss << line;
 
     std::string score = "SCORE";
     size_t wordScoreStartColumn = scoreStartColumn + (widthScorePannel - 2 - score.size()) / 2 + 1;
     ss << "\x1b[" << std::to_string(scoreStartRow) << ";" << std::to_string(wordScoreStartColumn) << "H";
-    ss << score;
+    ss << "\x1b[38;5;121m" << score << "\x1b[38;5;246m";
     ss << "\x1b[" << std::to_string(scoreStartRow) << ";" << std::to_string(scoreStartColumn) << "H";
     ss << "*";
     ss << "\x1b[" << std::to_string(scoreStartRow++) << ";" << std::to_string(scoreStartColumn + widthScorePannel -1) << "H";
@@ -286,16 +292,21 @@ std::string Game::drawScore() {
 
     ss << "\x1b[" << std::to_string(scoreStartRow++) << ";" << std::to_string(scoreStartColumn) << "H";
     ss << line;
-
+        //DRAW FIRST CELL
+      
+        //DRAW SECOND CELL
     for (int i = scoreStartRow; i < scoreStartRow + heightScorePannel - 4; i++) {
         ss << "\x1b[" << std::to_string(i) << ";" << std::to_string(scoreStartColumn) << "H";
         ss << "*";
         ss << "\x1b[" << std::to_string(i) << ";" << std::to_string(scoreStartColumn + widthScorePannel - 1) << "H";
         ss << "*";
     }
+
+    ss << "\x1b[0;0m";
     ss << "\x1b[" << std::to_string(scoreStartRow + heightScorePannel - 4) << ";" << std::to_string(scoreStartColumn) << "H";
     ss << line;
-
+        //DRAW SECOND CELL
+    //DRAW PANNEL FOR SCORE
     return ss.str();
 }
 
@@ -303,15 +314,20 @@ std::string Game::drawStatus(bool stopGame) {
     int scoreStartRow = 1 + 3 * widthLine + 2 * heightScorePannel + 1;
     int sizeScorePannel = console.second - size.second;
     int scoreStartColumn = maxColumn + 2 + (sizeScorePannel - widthScorePannel) / 2 + 1;
+    
     std::stringstream ss;
     std::string line(widthScorePannel, '*');
+    
+    //DRAW PANNEL FOR STATUS
+        //DRAW FIRST CELL
+    ss << "\x1b[38;5;246m";
     ss << "\x1b[" << std::to_string(scoreStartRow++) << ";" << std::to_string(scoreStartColumn) << "H";
     ss << line;
 
     std::string score = "STATUS";
     size_t wordScoreStartColumn = scoreStartColumn + (widthScorePannel - 2 - score.size()) / 2 + 1;
     ss << "\x1b[" << std::to_string(scoreStartRow) << ";" << std::to_string(wordScoreStartColumn) << "H";
-    ss << score;
+    ss << "\x1b[38;5;121m" << score << "\x1b[38;5;246m";
     ss << "\x1b[" << std::to_string(scoreStartRow) << ";" << std::to_string(scoreStartColumn) << "H";
     ss << "*";
     ss << "\x1b[" << std::to_string(scoreStartRow++) << ";" << std::to_string(scoreStartColumn + widthScorePannel - 1) << "H";
@@ -319,7 +335,9 @@ std::string Game::drawStatus(bool stopGame) {
 
     ss << "\x1b[" << std::to_string(scoreStartRow++) << ";" << std::to_string(scoreStartColumn) << "H";
     ss << line;
+        //DRAW FIRST CELL
 
+        //DRAW SECOND CELL
     for (int i = scoreStartRow; i < scoreStartRow + heightScorePannel - 4; i++) {
         ss << "\x1b[" << std::to_string(i) << ";" << std::to_string(scoreStartColumn) << "H";
         ss << "*";
@@ -328,6 +346,8 @@ std::string Game::drawStatus(bool stopGame) {
     }
     ss << "\x1b[" << std::to_string(scoreStartRow + heightScorePannel - 4) << ";" << std::to_string(scoreStartColumn) << "H";
     ss << line;
+        //DRAW SECOND CELL
+    //DRAW PANNEL FOR STATUS
 
     return ss.str();
 }
@@ -336,15 +356,20 @@ std::string Game::drawBestScore(int bestScore) {
     int scoreStartRow = 1 + 2 * widthLine + heightScorePannel + 1;
     int sizeScorePannel = console.second - size.second;
     int scoreStartColumn = maxColumn + 2 + (sizeScorePannel - widthScorePannel) / 2 + 1;
+    
     std::stringstream ss;
     std::string line(widthScorePannel, '*');
+    
+    //DRAW PANNEL FOR BESTSCORE
+        //DRAW FIRST CELL
+    ss << "\x1b[38;5;246m";
     ss << "\x1b[" << std::to_string(scoreStartRow++) << ";" << std::to_string(scoreStartColumn) << "H";
     ss << line;
-
+        
     std::string score = "BESTSCORE";
     size_t wordScoreStartColumn = scoreStartColumn + (widthScorePannel - 2 - score.size()) / 2 + 1;
     ss << "\x1b[" << std::to_string(scoreStartRow) << ";" << std::to_string(wordScoreStartColumn) << "H";
-    ss << score;
+    ss << "\x1b[38;5;121m" << score << "\x1b[38;5;246m";
     ss << "\x1b[" << std::to_string(scoreStartRow) << ";" << std::to_string(scoreStartColumn) << "H";
     ss << "*";
     ss << "\x1b[" << std::to_string(scoreStartRow++) << ";" << std::to_string(scoreStartColumn + widthScorePannel - 1) << "H";
@@ -352,7 +377,9 @@ std::string Game::drawBestScore(int bestScore) {
 
     ss << "\x1b[" << std::to_string(scoreStartRow++) << ";" << std::to_string(scoreStartColumn) << "H";
     ss << line;
-
+        //DRAW FIRST CELL
+       
+        //DRAW SECOND CELL
     for (int i = scoreStartRow; i < scoreStartRow + heightScorePannel - 4; i++) {
         ss << "\x1b[" << std::to_string(i) << ";" << std::to_string(scoreStartColumn) << "H";
         ss << "*";
@@ -361,6 +388,8 @@ std::string Game::drawBestScore(int bestScore) {
     }
     ss << "\x1b[" << std::to_string(scoreStartRow + heightScorePannel - 4) << ";" << std::to_string(scoreStartColumn) << "H";
     ss << line;
+        //DRAW SECOND CELL
+    //DRAW PANNEL FOR BESTSCORE
 
     return ss.str();
 }

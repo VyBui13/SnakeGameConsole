@@ -20,6 +20,6 @@ public:
 	std::string drawMenu(int);
 	std::string drawFeature(std::vector<std::vector<std::string>>, int);
 	std::string gameOver();
-	std::string exitGame();
+	void exitGame();
 };
 

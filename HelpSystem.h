@@ -8,5 +8,5 @@ public:
 	std::string drawMainPannel();
 	std::string drawInstructionLogo();
 	std::string drawInstruction();
-	std::string drawSmallPannel();
+	std::string drawSmallPannel(unsigned char);
 };
