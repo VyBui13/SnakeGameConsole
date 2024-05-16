@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Menu.h"
 #include "HelpSystem.h"
+#include "Option.h"
 #include <ctime>
 #include <stdlib.h>
 #include <thread>
@@ -13,6 +14,9 @@ unsigned char key = 'w';
 unsigned char oldKey;
 bool continueGame = true;
 bool stopGame = false;
+std::string headSnakeColor = "0;33m";
+std::string bodySnakeColor = "0;36m";
+std::string wallColor = "0;35m";
 
 enum class MenuOption {
     Play,
@@ -47,7 +51,7 @@ void playGame(Menu menu) {
         std::cout << newGame.drawBestScore(2);
         std::cout << newGame.drawStatus(true);
         while (!stopGame) {
-            std::cout << newGame.drawSnake();
+            std::cout << newGame.drawSnake(headSnakeColor, bodySnakeColor);
             //std::cout << newGame.deleteSnake();
             Sleep(newGame.timePush);
             newGame.control(key);
@@ -129,6 +133,33 @@ void playGame(Menu menu) {
     //GAMEOVER MENU
 }
 
+int chooseColor(Option& obj, std::string(Option::* func)(int), std::string(Option::* func2)(std::string) , int input, std::vector<std::pair<std::string, std::string>> color) {
+    unsigned char optionColorKey = ';';
+    int choiceColor = 0;
+    while (optionColorKey != Keys::Escaped && optionColorKey != Keys::Enter) {
+        std::cout << (obj.*func)(choiceColor);
+        std::cout << (obj.*func2)(color[choiceColor].first);
+        optionColorKey = _getch();
+        if (optionColorKey == 'w' || optionColorKey == 'W') {
+            choiceColor--;
+        }
+        else if (optionColorKey == 's' || optionColorKey == 'S') {
+            choiceColor++;
+        }
+        else {
+            continue;
+        }
+
+        if (choiceColor < 0) {
+            choiceColor = color.size() - 1;
+        }
+        else if (choiceColor > color.size() - 1) {
+            choiceColor = 0;
+        }
+    }
+    return choiceColor;
+}
+
 void inputKey() {
     while (!newGame.gameOver) {
         if (key != Keys::Escaped)
@@ -189,14 +220,14 @@ int main() {
         },
         {              
             " _____ _____ __    _____ ",
-            "|  |  |   __|  |  |  _  |",
-            "|     |   __|  |__|   __|",
+            "|..|..|...__|..|  |.._..|",
+            "|.....|...__|..|__|...__|",
             "|__|__|_____|_____|__|   "     
         },
         {             
             " _____ __ __ _____ _____ ",
-            "|   __|  |  |     |_   _|",
-            "|   __|-   -|-   -| | |  ",
+            "|...__|..|..|.....|_..._|",
+            "|...__||-.-| |-.-|  |.|  ",
             "|_____|__|__|_____| |_|  "
         }
     };
@@ -209,7 +240,7 @@ int main() {
     while (continueGame) {
         bool check = true;
         std::cout << newMenu.drawLogo();
-        
+
         //MAIN MENU
         while (true) {
             for (int i = 0; i <= static_cast<int>(MenuOption::Exit); i++) {
@@ -263,6 +294,11 @@ int main() {
                         selected = 3;
                         break;
                     }
+                    case MenuOption::Option:
+                    {
+                        selected = 2;
+                        break;
+                    }
                     default:
                         selected = 1;
                     }
@@ -281,7 +317,7 @@ int main() {
 
         //PLAY GAME
         if (selected == 1) {
-            std::cout << newGame.drawPanel();
+            std::cout << newGame.drawPanel(wallColor);
             std::cout << newGame.drawFruit();
             std::thread thread1(playGame, std::ref(newMenu));
             std::thread thread2(inputKey);
@@ -289,6 +325,89 @@ int main() {
             thread1.join();
         }
         //PLAYGAME
+
+        //OPTION
+        if (selected == 2) {
+            std::vector<std::string> logo{
+                " _____ _____ _____ _____ _____ _   _ _____  ",
+                "/  ___|  ___|_   _|_   _|_   _| \\ | |  __ \\ ",
+                "\\ `--.| |__   | |   | |   | | |  \\| | |  \\/ ",
+                " `--. \\  __|  | |   | |   | | | . ` | | __  ",
+                "/\\__/ / |___  | |   | |  _| |_| |\\  | |_\\ \\ ",
+                "\\____/\\____/  \\_/   \\_/  \\___/\\_| \\_/\\____/ "
+            };
+            std::vector<std::pair<std::string, std::string>> color{
+                {"0;31m", "Red"},
+                {"0;32m", "Green"},
+                {"0;33m", "Yellow"},
+                {"0;34m", "Blue"},
+                {"0;35m", "Magenta"},
+                {"0;36m", "Cyan"},
+                {"0;37m", "White"},
+                {"0;30m", "Black"},
+            };
+            Option newOption(80, logo, color);
+            std::cout << newOption.drawMainPannel();
+            std::cout << newOption.drawSettingLogo();
+            std::cout << newOption.drawSmallPannel();
+            std::cout << newOption.drawHeadColorHeader();
+            std::cout << newOption.drawBodyColorHeader();
+            std::cout << newOption.drawWallColorHeader();
+            std::cout << newOption.drawSignature();
+            std::cout << newOption.drawExampleWall(wallColor);
+            std::cout << newOption.drawExampleHeadSnake(headSnakeColor);
+            std::cout << newOption.drawExampleBodySnake(bodySnakeColor);
+
+
+            int choice = 1;
+            while (true) {
+                unsigned char optionKey = 'l';
+                while (optionKey != Keys::Escaped && optionKey != Keys::Enter) {
+                    std::cout << newOption.drawBody(choice);
+                    optionKey = _getch();
+                    if (optionKey == 'w' || optionKey == 'W') {
+                        choice--;
+                    }
+                    else if (optionKey == 's' || optionKey == 'S') {
+                        choice++;
+                    }
+                    else {
+                        continue;
+                    }
+
+                    if (choice < 1) {
+                        choice = 3;
+                    }
+                    else if (choice > 3) {
+                        choice = 1;
+                    }
+                }
+
+                if (optionKey == Keys::Escaped) {
+                    break;
+                }
+                if (choice == 1) {
+                    std::string(Option::* ptr2)(std::string) = &Option::drawExampleHeadSnake;
+                    std::string(Option:: * ptr)(int) = &Option::chooseHeadColor;
+                    int result = chooseColor(newOption, ptr, ptr2, 0, color);
+                    headSnakeColor = color[result].first;
+                }
+                else if (choice == 2) {
+                    std::string(Option::* ptr2)(std::string) = &Option::drawExampleBodySnake;
+                    std::string(Option:: * ptr)(int) = &Option::chooseBodyColor;
+                    int result = chooseColor(newOption, ptr, ptr2, 0, color);
+                    bodySnakeColor = color[result].first;
+                }
+                else {
+                    std::string(Option:: * ptr)(int) = &Option::chooseWallColor;
+                    std::string(Option::* ptr2)(std::string) = &Option::drawExampleWall;
+
+                    int result = chooseColor(newOption, ptr,ptr2, 0, color);
+                    wallColor = color[result].first;
+                }
+            }
+        }
+        //OPTION
 
         //HELP
         if (selected == 3) {

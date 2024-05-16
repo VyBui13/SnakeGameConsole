@@ -41,11 +41,11 @@ int Game::getSizeSnake() {
     return theChosenSnake.nTail;
 }
 
-std::string Game::drawPanel() {
+std::string Game::drawPanel(std::string wallColor) {
     std::stringstream ss;
     auto console = ConsoleSize::getConsoleSize();
     ss << "\x1b[s";
-    ss << "\x1b[0;35m";
+    ss << "\x1b[" << wallColor;
     
     ss << "\x1b[" << std::to_string(minRow) << ";" << std::to_string(minColumn) << "H";
     for (int i = 0; i < size.second; i++) {
@@ -76,14 +76,15 @@ std::string Game::drawFruit() {
     return ss.str();
 }
 
-std::string Game::drawSnake() {
+std::string Game::drawSnake(std::string headColor, std::string bodyColor) {
     std::stringstream ss;
     for (int i = 0; i < theChosenSnake.nTail; i++) {
+        ss << "\x1b[";
         if (i == 0) {
-            ss << "\x1b[0;33m";
+            ss << headColor;
         }
         else {
-            ss << "\x1b[0;36m";
+            ss << bodyColor;
         }
         ss << "\x1b[" << std::to_string(theChosenSnake.tailY[i]) << ";"
             << std::to_string(theChosenSnake.tailX[i]) << "H";

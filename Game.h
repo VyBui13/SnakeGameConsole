@@ -18,8 +18,8 @@ public:
     Game();
     Game(std::pair<int, int>);
     int getSizeSnake();
-    std::string drawPanel();
-    std::string drawSnake();
+    std::string drawPanel(std::string);
+    std::string drawSnake(std::string, std::string);
     std::string drawCurrentSnake();
     std::string drawFruit();
     std::string drawPannelScore();
