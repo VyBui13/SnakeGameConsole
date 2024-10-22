@@ -1,5 +1,0 @@
-﻿  Game.cpp
-  main.cpp
-C:\Users\Admin\Documents\C++\GameConsole\Snake\main.cpp(154,43): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  Generating Code...
-  Snake.vcxproj -> C:\Users\Admin\Documents\C++\GameConsole\x64\Debug\Snake.exe
